@@ -31,27 +31,38 @@ export class Api {
 
         let game = {};
         game.scores = linescore.inning_line_score;
+        game.battleStats = [
+          {
+            'label': 'R',
+            'home': linescore.home_team_runs,
+            'away': linescore.away_team_runs,
+          },
+          {
+            'label': 'H',
+            'home': linescore.home_team_hits,
+            'away': linescore.away_team_hits,
+          },
+          {
+            'label': 'E',
+            'home': linescore.home_team_errors,
+            'away': linescore.away_team_errors,
+          },
+        ];
 
         game.home = {
-          winner: Number( linescore.home_team_runs ) > Number( linescore.home_team_runs ),
+          winner: Number( linescore.home_team_runs ) > Number( linescore.away_team_runs ),
           code: boxscore.home_team_code,
           name: boxscore.home_fname,
           totalWins: boxscore.home_wins,
           totalLosses: boxscore.home_loss,
-          runs: linescore.home_team_runs,
-          hits: linescore.home_team_hits,
-          errors: linescore.home_team_errors,
           batters: boxscore.batting.filter( team => team.team_flag === "home" )[0].batter
         };
         game.away = {
-          winner: Number( linescore.home_team_runs ) < Number( linescore.home_team_runs ),
+          winner: Number( linescore.home_team_runs ) < Number( linescore.away_team_runs ),
           code: boxscore.away_team_code,
           name: boxscore.away_fname,
           totalWins: boxscore.away_wins,
           totalLosses: boxscore.away_loss,
-          runs: linescore.away_team_runs,
-          hits: linescore.away_team_hits,
-          errors: linescore.away_team_errors,
           batters: boxscore.batting.filter( team => team.team_flag === "away" )[0].batter
         };
         return game;
