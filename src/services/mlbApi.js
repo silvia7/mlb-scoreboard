@@ -12,16 +12,18 @@ export class Api {
   }
 
   //TODO: take as input dd/mm/yy
-  getScoreBoardData(link) {
-    return this.api.get(link)
-      .then(res => res.data.data.games)
-      .catch(err => err)
+  getScoreBoardData( link ) {
+    return this.api.get( link )
+      .then( res => res.data.data.games )
+      .catch( err => {
+        return Promise.reject( err.response );
+      })
   }
 
-  getGameDetails(gameDataDir) {
-    return this.api.get(gameDataDir)
-      .then(res => res.data.data)
-      .catch(err => err)
+  getGameDetails( gameDataDir ){
+    return this.api.get( gameDataDir )
+      .then( res => res.data.data )
+      .catch( err => err );
   }
 
 }

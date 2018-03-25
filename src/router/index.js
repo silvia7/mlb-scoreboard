@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import ScoreBoard from '@/components/ScoreBoard'
+import ScoreBoardListView from '@/components/ScoreBoardListView'
 
 Vue.use(Router)
 
@@ -8,8 +8,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'ScoreBoard',
-      component: ScoreBoard
+      name: 'ScoreBoardListView',
+      component: ScoreBoardListView
     }
   ]
 })
