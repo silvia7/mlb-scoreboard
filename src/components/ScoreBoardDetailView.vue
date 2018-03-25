@@ -1,5 +1,9 @@
 <template>
   <div v-if="data" class="game wrapper">
+    <button class="team-label" v-on:click="selectBatters(data.home.batters)"> {{ data.home.name }} </button>
+    vs.
+    <button class="team-label" v-on:click="selectBatters(data.away.batters)"> {{ data.away.name }} </button>
+
     <div class="team-stats">
       <div class="column">
         <div class="team-code">{{ data.home.code }}</div>
@@ -16,38 +20,56 @@
         <div>{{ stat.away }}</div>
       </div>
     </div>
-  </div>
 
+    <batters :batters="batters"></batters>
+  </div>
 
 </template>
 
 <script>
   import {Api} from '../services/mlbApi.js'
+  import Batters from './BatterStats.vue'
 
   export default {
     name: "score-board-detail-view",
-    data () {
+    components: {
+      Batters
+    },
+    data() {
       return {
         data: null,
+        batters: null,
         err: null
       }
     },
     created() {
       let api = new Api();
 
-      api.getGameDetails(this.$route.params.gameDataDir)
-        .then(data => {
+      api.getGameDetails( this.$route.params.gameDataDir )
+        .then( data => {
           this.data = data;
+          this.batters = data.home.batters;
           console.log(data)
         })
         .catch(err => { this.err = err })
 
+    },
+    methods: {
+      selectBatters: function( batters ) {
+        this.batters = batters;
+      }
     }
+
 
   }
 </script>
 
 <style scoped>
+  .team-label{
+    font-size: 1.5em;
+    display: inline-block;
+  }
+
   .team-code {
     text-transform: uppercase;
   }
