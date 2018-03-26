@@ -1,9 +1,10 @@
 <template>
   <div v-if="data" class="game wrapper">
-    <button class="team-label" v-on:click="selectBatters(data.home.batters)"> {{ data.home.name }} </button>
-    vs.
-    <button class="team-label" v-on:click="selectBatters(data.away.batters)"> {{ data.away.name }} </button>
-
+    <div class="game-info">
+      <a href="#" class="team-label" v-on:click="selectBatters(data.home.batters)"> <i class="bb-5x team-logo" :class="getLogoClass(data.home.code)"></i> {{ data.home.name }} </a>
+      vs.
+      <a href="#" class="team-label" v-on:click="selectBatters(data.away.batters)"> <i class="bb-5x team-logo" :class="getLogoClass(data.away.code)"></i> {{ data.away.name }} </a>
+    </div>
     <div class="team-stats">
       <div class="column">
         <div class="team-code">{{ data.home.code }}</div>
@@ -28,10 +29,12 @@
 
 <script>
   import {Api} from '../services/mlbApi.js'
+  import { logo } from '../mixins/logo'
   import Batters from './BatterStats.vue'
 
   export default {
     name: "score-board-detail-view",
+    mixins: [logo],
     components: {
       Batters
     },
@@ -49,7 +52,6 @@
         .then( data => {
           this.data = data;
           this.batters = data.home.batters;
-          console.log(data)
         })
         .catch(err => { this.err = err })
 
@@ -68,6 +70,12 @@
   .team-label{
     font-size: 1.5em;
     display: inline-block;
+    text-decoration: none;
+
+  }
+
+  .team-logo {
+    display: block;
   }
 
   .team-code {

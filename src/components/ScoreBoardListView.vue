@@ -1,6 +1,8 @@
 <template>
+
   <div class="wrapper">
     <h1 class="app-name">MLB Scoreboard</h1>
+
 
     <datepicker class="date-picker" v-on:input="updateGames" :value="date" format="d MMMM yyyy" name="game-date"></datepicker>
 
@@ -8,11 +10,13 @@
       <div class="game" v-for="game of games">
         <router-link :to="{name: 'ScoreBoardDetailView', params:{ gameDataDir: game.game_data_directory}}">
           <div v-bind:class="{ winner: game.homescore > game.awayscore }" class="team">
+            <i class="bb-5x" :class="getLogoClass(game.home_code)"></i>
             {{ game.home_team_name }}
             <span v-if="game.homescore">{{ game.homescore }}</span>
           </div>
 
           <div v-bind:class="{ winner: game.homescore < game.awayscore }" class="team">
+            <i class="bb-5x" :class="getLogoClass(game.away_code)"></i>
             {{ game.away_team_name }}
             <span v-if="game.awayscore">{{ game.awayscore }}</span>
           </div>
@@ -28,13 +32,15 @@
 </template>
 
 <script>
-import {Api} from '../services/mlbApi.js'
+import { Api } from '../services/mlbApi'
+import { logo } from '../mixins/logo'
 import Datepicker from 'vuejs-datepicker';
 
 let api = new Api();
 
 export default {
   name: 'ScoreBoardListView',
+  mixins: [logo],
   data () {
     return {
       data: null,
@@ -47,7 +53,7 @@ export default {
     Datepicker
   },
   created() {
-    let defaultDate = new Date(2014, 9, 6); // Set default date to Oct 09 2014
+    let defaultDate = new Date(2014, 9, 6); // Set default date to Oct 06 2014
     this.updateGames(defaultDate);
   },
   methods: {
@@ -67,13 +73,15 @@ export default {
           console.log( this.games );
         })
         .catch(err => { this.err = err })
-    }
+    },
+
   }
 }
 </script>
 
 
 <style scoped>
+
 .app-name {
   font-weight: bold;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
