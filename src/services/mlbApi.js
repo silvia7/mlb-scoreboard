@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { utils } from "../mixins/utils";
+
 
 export class Api {
   constructor() {
@@ -12,8 +14,8 @@ export class Api {
   }
 
   getScoreBoardData( date ) {
-    const mm = Api.toTwoDigits( date.getMonth() + 1 );
-    const dd = Api.toTwoDigits( date.getDate() );
+    const mm = utils.methods.toTwoDigits( date.getMonth() + 1 );
+    const dd = utils.methods.toTwoDigits( date.getDate() );
     const yyyy = date.getFullYear();
 
     const target = 'components/game/mlb/year_' + yyyy +
@@ -90,9 +92,5 @@ export class Api {
       });
   }
 
-  static toTwoDigits(n) {
-    n = n >= 10 ? '' + n : '0' + n;
-    return n;
-  }
 
 }

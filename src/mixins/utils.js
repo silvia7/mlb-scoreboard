@@ -13,6 +13,14 @@ export const utils ={
 
       if ( isNaN( date.getTime() ) ) return null;
       return date;
+    },
+
+    /* Returns a string of number with padding 0 added to the front, if number is less than 10
+     * @param: {Number}
+     */
+    toTwoDigits: function (n) {
+        n = n >= 10 ? '' + n : '0' + n;
+        return n;
     }
 
   }
