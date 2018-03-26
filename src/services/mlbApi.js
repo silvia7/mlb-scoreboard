@@ -11,10 +11,28 @@ export class Api {
     })
   }
 
-  //TODO: take as input dd/mm/yy
-  getScoreBoardData( link ) {
-    return this.api.get( link )
-      .then( res => res.data.data.games )
+  getScoreBoardData( date ) {
+    const mm = Api.toTwoDigits( date.getMonth() + 1 );
+    const dd = Api.toTwoDigits( date.getDate() );
+    const yyyy = date.getFullYear();
+
+    const target = 'components/game/mlb/year_' + yyyy +
+      '/month_' + mm + '/day_' + dd + '/master_scoreboard.json';
+
+    return this.api.get( target )
+      .then( res => {
+        const data = res.data.data.games;
+        if ( data.game ) data.game = ( Array.isArray(data.game) ) ? data.game : [data.game];
+
+        data.game.forEach(game => {
+          if ( game.linescore && game.linescore.r ) {
+            game.homescore = Number(game.linescore.r.home);
+            game.awayscore = Number(game.linescore.r.away);
+          }
+        });
+
+        return data;
+      } )
       .catch( err => {
         return Promise.reject( err.response );
       });
@@ -70,6 +88,11 @@ export class Api {
       .catch( err => {
         return Promise.reject( err.response );
       });
+  }
+
+  static toTwoDigits(n) {
+    n = n >= 10 ? '' + n : '0' + n;
+    return n;
   }
 
 }
