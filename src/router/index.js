@@ -3,12 +3,17 @@ import Router from 'vue-router'
 import ScoreBoardListView from '@/components/ScoreBoardListView'
 import ScoreBoardDetailView from '@/components/ScoreBoardDetailView'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [
     {
       path: '/',
+      name: 'main',
+      component: ScoreBoardListView
+    },
+    {
+      path: '/game/:date',
       name: 'ScoreBoardListView',
       component: ScoreBoardListView
     },

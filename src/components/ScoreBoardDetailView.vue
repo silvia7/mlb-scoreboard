@@ -29,12 +29,12 @@
 
 <script>
   import {Api} from '../services/mlbApi.js'
-  import { logo } from '../mixins/logo'
+  import { utils } from '../mixins/utils'
   import Batters from './BatterStats.vue'
 
   export default {
     name: "score-board-detail-view",
-    mixins: [logo],
+    mixins: [utils],
     components: {
       Batters
     },

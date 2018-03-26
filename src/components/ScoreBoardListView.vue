@@ -33,14 +33,14 @@
 
 <script>
 import { Api } from '../services/mlbApi'
-import { logo } from '../mixins/logo'
+import { utils } from '../mixins/utils'
 import Datepicker from 'vuejs-datepicker';
 
 let api = new Api();
 
 export default {
   name: 'ScoreBoardListView',
-  mixins: [logo],
+  mixins: [utils],
   data () {
     return {
       data: null,
@@ -53,12 +53,22 @@ export default {
     Datepicker
   },
   created() {
-    let defaultDate = new Date(2014, 9, 6); // Set default date to Oct 06 2014
-    this.updateGames(defaultDate);
+    let gameDate = null;
+
+    if ( this.$route && this.$route.params.date ) {
+      gameDate = this.stringToDate( this.$route.params.date );
+    }
+
+    gameDate = gameDate || new Date(2014, 9, 6); // Set default date to Oct 06 2014
+
+    this.updateGames(gameDate);
   },
   methods: {
     updateGames: function(newDate) {
       if ( ( newDate - this.date ) === 0 ) return;
+
+      const dateString = newDate.toLocaleDateString();
+      this.$router.push({ name: 'ScoreBoardListView', params: { date: dateString }});
 
       this.date = newDate;
       this.games = null;
@@ -70,7 +80,6 @@ export default {
           this.data = data;
           this.games = data.game;
 
-          console.log( this.games );
         })
         .catch(err => { this.err = err })
     },
