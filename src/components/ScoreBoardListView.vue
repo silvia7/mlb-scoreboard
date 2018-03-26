@@ -2,6 +2,8 @@
   <div class="wrapper">
     <h1 class="app-name">MLB Scoreboard</h1>
 
+    <datepicker class="date-picker" v-on:input="updateGames" :value="date" format="d MMMM yyyy" name="game-date"></datepicker>
+
     <div v-if="data">
       <div class="game" v-for="game of games">
         <router-link :to="{name: 'ScoreBoardDetailView', params:{ gameDataDir: game.game_data_directory}}">
@@ -20,13 +22,16 @@
       </div>
     </div>
 
-    <div v-if="err">No Game Today</div>
+    <div v-if="err || !games">No Game on {{ this.date.toDateString() }}</div>
 
   </div>
 </template>
 
 <script>
 import {Api} from '../services/mlbApi.js'
+import Datepicker from 'vuejs-datepicker';
+
+let api = new Api();
 
 export default {
   name: 'ScoreBoardListView',
@@ -34,27 +39,35 @@ export default {
     return {
       data: null,
       games: null,
-      err: null
+      err: null,
+      date: null,
     }
   },
-
+  components: {
+    Datepicker
+  },
   created() {
-    let api = new Api();
+    let defaultDate = new Date(2014, 9, 6); // Set default date to Oct 09 2014
+    this.updateGames(defaultDate);
+  },
+  methods: {
+    updateGames: function(newDate) {
+      if ( ( newDate - this.date ) === 0 ) return;
 
-    api.getScoreBoardData('components/game/mlb/year_2014/month_04/day_06/master_scoreboard.json')
-      .then(data => {
-        this.data = data;
-        this.games = ( Array.isArray(data.game) ) ? data.game:[data.game];
-        console.log(data);
-        this.games.forEach(game => {
-          if ( game.linescore && game.linescore.r ) {
-            game.homescore = Number(game.linescore.r.home);
-            game.awayscore = Number(game.linescore.r.away);
-          }
-        });
-      })
-      .catch(err => { this.err = err })
+      this.date = newDate;
+      this.games = null;
+      this.err = null;
+      this.data = null;
 
+      api.getScoreBoardData( newDate )
+        .then(data => {
+          this.data = data;
+          this.games = data.game;
+
+          console.log( this.games );
+        })
+        .catch(err => { this.err = err })
+    }
   }
 }
 </script>
@@ -75,5 +88,10 @@ export default {
 
 .winner{
   font-weight: bold;
+}
+
+.wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 </style>
