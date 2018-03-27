@@ -45,7 +45,8 @@
   padding: 10px;
   margin: 10px 0;
 
-  background-color: bisque;
+  color: white;
+  background-color: #092668;
   border-radius: 5px;
 }
 </style>

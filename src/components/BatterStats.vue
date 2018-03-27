@@ -36,8 +36,18 @@
 </script>
 
 <style scoped>
+  .row {
+    padding: 5px;
+  }
+
+  .row.batter:nth-child(odd) {
+    background-color: #eeeeee;
+  }
+
   .label {
     font-weight: bold;
+    color: white;
+    background-color: #092668;
   }
 
   .row .name {

@@ -1,9 +1,15 @@
 <template>
   <div v-if="data" class="game wrapper">
     <div class="game-info">
-      <a href="#" class="team-label" v-on:click="selectBatters(data.home.batters)"> <i class="bb-5x team-logo" :class="getLogoClass(data.home.code)"></i> {{ data.home.name }} </a>
-      vs.
-      <a href="#" class="team-label" v-on:click="selectBatters(data.away.batters)"> <i class="bb-5x team-logo" :class="getLogoClass(data.away.code)"></i> {{ data.away.name }} </a>
+      <a v-bind:class="{ selected: data.home.code === selectedTeam }" class="team-label" v-on:click="selectBatters(data.home.batters, data.home.code)">
+        <i class="bb-5x team-logo" :class="getLogoClass(data.home.code)"></i>
+        {{ data.home.name }}
+      </a>
+      <span class="vs"> vs.</span>
+      <a v-bind:class="{ selected: data.away.code === selectedTeam }" class="team-label" v-on:click="selectBatters(data.away.batters, data.away.code)">
+        <i class="bb-5x team-logo" :class="getLogoClass(data.away.code)"></i>
+        {{ data.away.name }}
+      </a>
     </div>
     <div class="team-stats">
       <div class="column">
@@ -22,7 +28,7 @@
       </div>
     </div>
 
-    <batters :batters="batters"></batters>
+    <batters class="batters" :batters="batters"></batters>
   </div>
 
 </template>
@@ -42,7 +48,8 @@
       return {
         data: null,
         batters: null,
-        err: null
+        err: null,
+        selectedTeam: null
       }
     },
     created() {
@@ -50,14 +57,18 @@
 
       api.getGameDetails( this.$route.params.gameDataDir )
         .then( data => {
+          console.log(data);
           this.data = data;
           this.batters = data.home.batters;
+          this.selectedTeam = data.home.code;
         })
         .catch(err => { this.err = err })
 
     },
     methods: {
-      selectBatters: function( batters ) {
+      selectBatters: function( batters, code ) {
+        console.log(code);
+        this.selectedTeam = code;
         this.batters = batters;
       }
     }
@@ -68,10 +79,27 @@
 
 <style scoped>
   .team-label{
-    font-size: 1.5em;
-    display: inline-block;
-    text-decoration: none;
+    margin: 10px;
+    padding: 10px;
 
+    font-size: 1.2em;
+    display: inline-block;
+
+    text-decoration: none;
+    color: black;
+
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .vs {
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+
+  .team-label:hover {
+
+    background-color: #eeeeee;
   }
 
   .team-logo {
@@ -82,6 +110,10 @@
     text-transform: uppercase;
   }
 
+  .team-stats {
+    border: darkgrey 1px solid;
+  }
+
   .winner,
   .column .label {
     font-weight: bold;
@@ -89,10 +121,23 @@
 
   .column {
     display: inline-block;
-    padding: 5px;
+    padding: 5px 10px;
+  }
+
+  .column:nth-child(even) {
+    background-color: #eeeeee;
+  }
+
+  .selected {
+    border: 2px solid #092668;
   }
 
   .stats {
+    width: auto;
     padding-left: 15px;
+  }
+
+  .batters {
+    margin-top: 50px;
   }
 </style>

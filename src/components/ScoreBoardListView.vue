@@ -8,19 +8,19 @@
     <datepicker class="date-picker" v-on:input="updateGames" :value="date" format="d MMMM yyyy" name="game-date"></datepicker>
     <button class="btn arrow" v-on:click="moveDate( -1 )"> > </button>
 
-    <div v-if="data">
+    <div class="games" v-if="data">
       <div class="game" v-for="game of games">
-        <router-link :to="{name: 'ScoreBoardDetailView', params:{ gameDataDir: game.game_data_directory}}">
+        <router-link class="game-redirect" :to="{name: 'ScoreBoardDetailView', params:{ gameDataDir: game.game_data_directory}}">
           <div v-bind:class="{ winner: game.homescore > game.awayscore }" class="team">
-            <i class="bb-5x" :class="getLogoClass(game.home_code)"></i>
-            {{ game.home_team_name }}
-            <span v-if="game.homescore">{{ game.homescore }}</span>
+            <i class="bb-5x team-logo" :class="getLogoClass(game.home_code)"></i>
+            <span class="team-name"> {{ game.home_team_name }} </span>
+            <span>{{ game.homescore }}</span>
           </div>
 
           <div v-bind:class="{ winner: game.homescore < game.awayscore }" class="team">
-            <i class="bb-5x" :class="getLogoClass(game.away_code)"></i>
-            {{ game.away_team_name }}
-            <span v-if="game.awayscore">{{ game.awayscore }}</span>
+            <i class="bb-5x team-logo" :class="getLogoClass(game.away_code)"></i>
+            <span class="team-name"> {{ game.away_team_name }} </span>
+            <span>{{ game.awayscore }}</span>
           </div>
 
           <div class="game-status" >{{ game.status.status }}</div>
@@ -69,7 +69,7 @@ export default {
     this.updateGames(gameDate);
   },
   methods: {
-    updateGames: function(newDate) {
+    updateGames(newDate) {
       if ( ( newDate - this.date ) === 0 ) return;
 
       const dateString = newDate.toLocaleDateString();
@@ -131,17 +131,46 @@ export default {
 .game{
   display: inline-block;
 
-  padding: 5px;
+  width: 200px;
+  min-height: 250px;
+
+  margin: 10px;
+  padding-top: 10px;
+
+  border-radius: 5px;
   border: darkgrey 1px solid;
+}
+
+.game-redirect {
+  text-decoration: none;
+  color: black;
+}
+
+
+.team-name {
+  display: block;
+}
+
+.game-status {
+  background-color: #092668;
+  padding: 10px 5px;
+  margin-top: 5px;
+
+  font-weight: bold;
+  color: white;
+
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.team-logo {
+  display: block;
+  min-height: 89px;
+  min-width: 1px;
 }
 
 .winner{
   font-weight: bold;
-}
-
-.wrapper {
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
 .date-picker,
