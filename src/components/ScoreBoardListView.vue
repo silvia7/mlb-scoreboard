@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <div v-if="err || !games">No Game on {{ this.date.toDateString() }}</div>
+    <div class="no-data" v-if="!loading && ( err || !games )">No Game on {{ this.date.toDateString() }}</div>
 
   </div>
 </template>
@@ -51,6 +51,7 @@ export default {
       err: null,
       date: null,
       favouriteTeam: null,
+      loading: true,
     }
   },
   components: {
@@ -79,15 +80,21 @@ export default {
       this.games = null;
       this.err = null;
       this.data = null;
+      this.loading = true;
 
       api.getScoreBoardData( newDate )
         .then(data => {
           this.data = data;
           this.games = data.game;
 
+          this.loading = false;
+
           this.arrangeGames( this.favouriteTeam );
         })
-        .catch(err => { this.err = err })
+        .catch(err => {
+          this.err = err;
+          this.loading = false;
+        })
     },
     moveDate( day ) {
       const newDate = new Date();
@@ -126,6 +133,10 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.no-data {
+  padding-top: 20%;
 }
 
 .game{
