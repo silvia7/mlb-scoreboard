@@ -85,6 +85,13 @@ export class Api {
           totalLosses: boxscore.away_loss,
           batters: boxscore.batting.filter( team => team.team_flag === "away" )[0].batter
         };
+
+        const date = new Date(boxscore.date);
+        game.date = {
+          localDateString: date.toLocaleDateString(),
+          normalDateString: boxscore.date
+        };
+
         return game;
       })
       .catch( err => {

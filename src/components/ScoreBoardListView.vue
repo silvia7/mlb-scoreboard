@@ -4,9 +4,9 @@
     <h1 class="app-name"><i class="bb-2x bb-mlb"></i> MLB Scoreboard</h1>
 
     <favourite-team-selector @changed="arrangeGames"></favourite-team-selector>
-    <button class="btn arrow" v-on:click="moveDate( 1 )"> < </button>
+    <button class="btn arrow" v-on:click="moveDate( -1 )"> < </button>
     <datepicker class="date-picker" v-on:input="updateGames" :value="date" format="d MMMM yyyy" name="game-date"></datepicker>
-    <button class="btn arrow" v-on:click="moveDate( -1 )"> > </button>
+    <button class="btn arrow" v-on:click="moveDate( 1 )"> > </button>
 
     <div class="games" v-if="data">
       <div class="game" v-for="game of games">
