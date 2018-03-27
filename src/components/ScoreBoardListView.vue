@@ -3,7 +3,7 @@
   <div class="wrapper">
     <h1 class="app-name"><i class="bb-2x bb-mlb"></i> MLB Scoreboard</h1>
 
-
+    <favourite-team-selector @changed="arrangeGames"></favourite-team-selector>
     <button class="btn arrow" v-on:click="moveDate( 1 )"> < </button>
     <datepicker class="date-picker" v-on:input="updateGames" :value="date" format="d MMMM yyyy" name="game-date"></datepicker>
     <button class="btn arrow" v-on:click="moveDate( -1 )"> > </button>
@@ -37,6 +37,7 @@
 import { Api } from '../services/mlbApi'
 import { utils } from '../mixins/utils'
 import Datepicker from 'vuejs-datepicker';
+import FavouriteTeamSelector from  './FavouriteTeamSelector'
 
 let api = new Api();
 
@@ -52,7 +53,8 @@ export default {
     }
   },
   components: {
-    Datepicker
+    Datepicker,
+    FavouriteTeamSelector
   },
   created() {
     let gameDate = null;
@@ -90,6 +92,23 @@ export default {
       newDate.setDate(this.date .getDate() + day);
 
       this.updateGames(newDate);
+    },
+
+    arrangeGames( favouriteTeam ) {
+      if ( !this.games ) return;
+
+      console.log(this.games.length);
+
+      let favGames = this.games.filter( game =>
+        ( game.home_file_code == favouriteTeam || game.away_file_code == favouriteTeam ) );
+
+      favGames.forEach(( game => {
+        let idx = this.games.indexOf(game);
+        if (idx >= 0) this.games.splice(idx, 1);
+      }).bind(this) );
+
+      this.games = favGames.concat( this.games );
+
     }
 
   }
@@ -107,6 +126,8 @@ export default {
 }
 
 .game{
+  display: inline-block;
+
   padding: 5px;
   border: darkgrey 1px solid;
 }
