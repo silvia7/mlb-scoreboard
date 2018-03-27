@@ -1,10 +1,12 @@
 <template>
 
   <div class="wrapper">
-    <h1 class="app-name">MLB Scoreboard</h1>
+    <h1 class="app-name"><i class="bb-2x bb-mlb"></i> MLB Scoreboard</h1>
 
 
+    <button class="btn arrow" v-on:click="moveDate( 1 )"> < </button>
     <datepicker class="date-picker" v-on:input="updateGames" :value="date" format="d MMMM yyyy" name="game-date"></datepicker>
+    <button class="btn arrow" v-on:click="moveDate( -1 )"> > </button>
 
     <div v-if="data">
       <div class="game" v-for="game of games">
@@ -83,6 +85,12 @@ export default {
         })
         .catch(err => { this.err = err })
     },
+    moveDate( day ) {
+      const newDate = new Date();
+      newDate.setDate(this.date .getDate() + day);
+
+      this.updateGames(newDate);
+    }
 
   }
 }
@@ -110,5 +118,10 @@ export default {
 .wrapper {
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.date-picker,
+.btn.arrow {
+  display: inline-block;
 }
 </style>
