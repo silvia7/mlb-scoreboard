@@ -62,6 +62,7 @@ export default {
     let gameDate = null;
 
     if ( this.$route && this.$route.params.date ) {
+
       gameDate = this.stringToDate( this.$route.params.date );
     }
 
@@ -97,10 +98,10 @@ export default {
         })
     },
     moveDate( day ) {
-      const newDate = new Date();
-      newDate.setDate(this.date .getDate() + day);
+      const newDate = new Date( this.date.toLocaleDateString() );
+      newDate.setDate( this.date.getDate() + day );
 
-      this.updateGames(newDate);
+      this.updateGames( newDate );
     },
 
     arrangeGames( favouriteTeam ) {
