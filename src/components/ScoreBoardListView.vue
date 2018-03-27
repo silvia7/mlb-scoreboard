@@ -50,6 +50,7 @@ export default {
       games: null,
       err: null,
       date: null,
+      favouriteTeam: null,
     }
   },
   components: {
@@ -84,6 +85,7 @@ export default {
           this.data = data;
           this.games = data.game;
 
+          this.arrangeGames( this.favouriteTeam );
         })
         .catch(err => { this.err = err })
     },
@@ -95,9 +97,10 @@ export default {
     },
 
     arrangeGames( favouriteTeam ) {
-      if ( !this.games ) return;
+      if ( ! favouriteTeam  ) return;
+      this.favouriteTeam = favouriteTeam;
 
-      console.log(this.games.length);
+      if( !this.games ) return;
 
       let favGames = this.games.filter( game =>
         ( game.home_file_code == favouriteTeam || game.away_file_code == favouriteTeam ) );
