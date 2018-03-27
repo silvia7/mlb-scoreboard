@@ -92,5 +92,15 @@ export class Api {
       });
   }
 
+  getTeamList() {
+    return this.api({
+      url: 'json/named.team_all.bam?sport_code=%27mlb%27&active_sw=%27Y%27&all_star_sw=%27N%27',
+      baseURL: 'http://lookup-service-prod.mlb.com' })
+      .then( res => res.data.team_all.queryResults.row )
+      .catch( err => {
+        return Promise.reject( err.response );
+      });
+  }
+
 
 }
