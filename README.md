@@ -22,15 +22,15 @@ npm run build
 ### Screens
 ##### Scoreboard - List View:
 - Display a list of baseball games on a given day, with home/away team names and scores + statuses      
-- Allow user to toggle between dates (next day, previous day) or select a day.
-- Always showing up Toronro Blue Jays first in the list view since it is our favourite team!
-- Display a message ("No games today") if there is no game playing on that date.
-- Bold the name of the winning team (team with more runs).
+- Allow user to toggle between dates (next day, previous day) or select a day
+- Always showing up Toronro Blue Jays first in the list view since it is our favourite team
+- Display a message ("No games today") if there is no game playing on that date
+- Bold the name of the winning team (team with more runs)
 
 ##### Scoreboard - Detail View:
-- Use the data from "{game_data_directory}/boxscore.json" to populate a detail screen for the game that user clicks.
-- The detail screen displays a line score of the game (inning by inning). It also displays a list of batters and stats for each team and allows user to toggle between viewing either team's batters.  
-- When user finishes viewing the details of the game, the screen can return to the list of games where user last left off.
+- Use the data from "{game_data_directory}/boxscore.json" to populate a detail screen for the game that user clicks
+- The detail screen displays a line score of the game (inning by inning). It also displays a list of batters and stats for each team and allows user to toggle between viewing either team's batters  
+- When user finishes viewing the details of the game, the screen can return to the list of games where user last left off
 
 ### Additional Features
 - Team Logo
